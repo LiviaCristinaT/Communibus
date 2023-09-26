@@ -1,18 +1,18 @@
-# [Nome do projeto]
+# CommuniBus
 
 [Escreva um ou dois  parágrafo resumindo o objetivo do seu projeto.]
 
 ## Alunos integrantes da equipe
 
-* [Nome completo do aluno 1]
-* [Nome completo do aluno 2]
-* [Nome completo do aluno 3]
-* [Nome completo do aluno 4]
+* Lêda Lacerda Bombinho do Val
+* Livia Cristina Taciano Ferreira
+* Mayara Rocha Moura de Almeida
+* Pablo Lorran de Araújo Lopes
+* Rodrigo Tadeu da Cunha Pontes
 
 ## Professores responsáveis
 
-* [Nome completo do professor 1]
-* [Nome completo do professor 2]
+* Claudiney Vander Ramos
 
 ## Instruções de utilização
 
