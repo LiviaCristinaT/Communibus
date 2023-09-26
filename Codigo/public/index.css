@@ -1,0 +1,112 @@
+img {
+    width: 67px;
+    height: 67px;
+    flex-shrink: 0;
+    background: -166.023px -211.206px / 595.614% 595.614% no-repeat;
+
+}
+
+body {
+    background-color: #035;
+}
+
+main {
+    padding: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.btn-primary {
+    width: 100%;
+    border-radius: 10px;
+    background: #FF5200;
+    border-color: #FF5200;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    font-family: 'Mulish';
+    text-transform: uppercase;
+}
+
+a:hover {
+    color: #035;
+}
+
+.btn-primary:hover {
+    background-color: #035;
+}
+
+a {
+    color: #FF5200;
+}
+
+.title {
+    color: #000;
+    font-family: 'Mulish';
+    font-size: 24px;
+    text-transform: uppercase;
+    font-weight: 400;
+    text-align: center;
+}
+
+p,
+label {
+    color: #000;
+    font-family: 'Mulish';
+    font-weight: 400;
+    text-transform: uppercase;
+}
+
+.ptermos,
+.modal-title {
+    color: #000;
+    font-family: 'Mulish';
+    text-transform: none;
+}
+
+.termosuso {
+    padding-top: 0.7rem;
+    width: max-content;
+}
+
+.g-3,
+.gy-3 {
+    --bs-gutter-y: 0;
+}
+
+.cadastro {
+    padding: 0.8rem;
+    text-align: center;
+}
+
+.container-sm,
+.container {
+    padding: 20px;
+    border-radius: 10px;
+    background: #D9D9D9;
+    box-shadow: 5px 10px 13px 6px rgba(0, 0, 0, 0.25);
+}
+
+.form-control {
+    border-radius: 10px;
+    background: rgba(255, 246, 242, 0.46);
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+}
+
+.headerindex {
+    background-color: aliceblue;
+}
+
+.imgheader {
+    display: flex;
+    align-items: center;
+}
+
+
+@media screen and (max-width: 768px) {
+    main {
+        padding: 1rem;
+    }
+
+    .title {
+        font-size: 20px;
+    }
+}
