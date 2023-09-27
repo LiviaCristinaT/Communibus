@@ -110,3 +110,17 @@ label {
         font-size: 20px;
     }
 }
+
+.form-check-input:focus {
+    border-color: none;
+    outline: 0;
+    box-shadow: none;
+}
+
+.form-check-input:checked[type=checkbox]{
+    background-color: #FF5200;
+  }
+  
+  .form-check-input:focus[type=checkbox] {
+    box-shadow: 0 0 0 0.1px #FF5200;
+  }
