@@ -56,9 +56,19 @@ app.post("/", function(req,res){
 
 
 app.post("/usuario/", (req, res) =>{
-    const q = "INSERT INTO usuario (`nome`, `email`, `senha`, `confirmasenha`) VALUES (?, ?, ?, ?)";
-    const values = [req.body.nome, req.body.email, req.body.senha, req.body.confirmasenha];
+    const nome = req.body.nome;
+    const email = req.body.email;
+    const senha = req.body.senha;
+    const confirmasenha = req.body.confirmasenha;
 
+    // Verificar se senha e confirmasenha coincidem
+    if (senha !== confirmasenha) {
+        return res.status(400).send('As senhas não coincidem.');
+    }
+    
+    const q = "INSERT INTO usuario (`nome`, `email`, `senha`, `confirmasenha`) VALUES (?, ?, ?, ?)";
+    const values = [nome, email, senha, confirmasenha];
+    
     db.query(q, values, (err, data) =>{
         if(err){
             console.error('Erro ao consultar o banco de dados');

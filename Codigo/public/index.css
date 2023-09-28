@@ -14,7 +14,11 @@ img {
 }
 
 body {
-    background-color: #035;
+    background-image: url('./EstSãoGabriel.jpeg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center center;
 }
 
 .carrossel {
@@ -120,6 +124,20 @@ label {
     align-items: center;
 }
 
+.form-check-input:focus {
+    border-color: none;
+    outline: 0;
+    box-shadow: none;
+}
+
+.form-check-input:checked[type=checkbox]{
+    background-color: #FF5200;
+    border-color: #FF5200;
+  }
+  
+  .form-check-input:focus[type=checkbox] {
+    box-shadow: 0 0 0 0.1px #FF5200;
+}
 
 @media screen and (max-width: 768px) {
     main {
@@ -130,17 +148,3 @@ label {
         font-size: 20px;
     }
 }
-
-.form-check-input:focus {
-    border-color: none;
-    outline: 0;
-    box-shadow: none;
-}
-
-.form-check-input:checked[type=checkbox]{
-    background-color: #FF5200;
-  }
-  
-  .form-check-input:focus[type=checkbox] {
-    box-shadow: 0 0 0 0.1px #FF5200;
-  }
