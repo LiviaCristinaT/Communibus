@@ -1,9 +1,32 @@
+const axios = require('axios'); // Certifique-se de adicionar isso no topo do arquivo
 const express = require('express');
 const bodyParser = require('body-parser');
 const db = require('./db')
 
 const app = express();
-const port = 4000;
+const port = 4001;
+
+app.get('/proxy', async (req, res) => {
+    try {
+        const response = await axios.get('http://mobile-l.sitbus.com.br:6060/siumobile-ws-v01/rest/ws/buscarLinhas/retornoJSONListaLinhas');
+        res.json(response.data);
+    } catch (error) {
+        console.error('Erro ao fazer a requisição:', error);
+        res.status(500).send('Erro interno');
+    }
+});
+
+app.get('/proxyParadasProximas', async (req, res) => {
+    const { latitude, longitude } = req.query;
+    try {
+        const response = await axios.get(`http://mobile-l.sitbus.com.br:6060/siumobile-ws-v01/rest/ws/buscarParadasProximas/${longitude}/${latitude}/0/retornoJSON`);
+        res.json(response.data);
+    } catch (error) {
+        console.error('Erro ao fazer a requisição:', error);
+        res.status(500).send('Erro interno');
+    }
+});
+
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -28,6 +51,8 @@ app.post("/", function(req,res){
     res.end();
 })
 })
+
+
 
 
 app.post("/usuario/", (req, res) =>{
@@ -55,3 +80,5 @@ app.get("/index.html", function(req,res){
 app.listen(port, () => {
     console.log(`Servidor na porta ${port}`)
 });
+
+
