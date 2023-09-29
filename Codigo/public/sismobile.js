@@ -80,15 +80,14 @@ function exibirParadasProximas(paradas, minhaLatitude, minhaLongitude) {
     card.className = 'card';
 
     const codigo = document.createElement('h3');
-    codigo.textContent = `Código: ${parada.cod}`;
+    codigo.innerHTML = `Código: ${parada.cod}`;
 
     const descricao = document.createElement('p');
-    descricao.textContent = `Descrição: ${parada.desc}`;
+    descricao.innerHTML = `<strong>Endereço: </strong> ${parada.desc}`;
 
     const distanciaElemento = document.createElement('p');
-    distanciaElemento.textContent = `Distância: ${distancia.toFixed(2)} km`;
+    distanciaElemento.innerHTML = `<strong>Distância:</strong> ${distancia.toFixed(2)} km`;
 
-    card.appendChild(codigo);
     card.appendChild(descricao);
     card.appendChild(distanciaElemento);
 
