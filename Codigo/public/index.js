@@ -11,13 +11,13 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/proxy', async (req, res) => {
-  try {
-    const response = await axios.get('http://mobile-l.sitbus.com.br:6060/siumobile-ws-v01/rest/ws/buscarLinhas/retornoJSONListaLinhas');
-    res.json(response.data);
-  } catch (error) {
-    console.error('Erro ao fazer a requisição:', error);
-    res.status(500).send('Erro interno');
-  }
+    try {
+        const response = await axios.get('http://mobile-l.sitbus.com.br:6060/siumobile-ws-v01/rest/ws/buscarLinhas/retornoJSONListaLinhas');
+        res.json(response.data);
+    } catch (error) {
+        console.error('Erro ao fazer a requisição:', error);
+        res.status(500).send('Erro interno');
+    }
 });
 
 app.get('/proxyParadasProximas', async (req, res) => {
@@ -31,30 +31,48 @@ app.get('/proxyParadasProximas', async (req, res) => {
     }
 });
 
+function validar(senha, confirmasenha) {
+    if (senha === confirmasenha) {
+        return true;
+    } else {
+        console.log('As senhas não coincidem!');
+        return false;
+    }
+}
+
 app.use(bodyParser.urlencoded({ extended: true }));
 
-
-app.get("/", function(req,res){
+app.get("/", function (req, res) {
     res.sendFile(__dirname + "/public/login.html");
 })
 
-app.post("/", function(req,res){
+app.post("/", function (req, res) {
     var email = req.body.email;
     var senha = req.body.senha;
-    db.query("SELECT * FROM usuario WHERE email = ? AND senha = ?", [email,senha], function(error, results, fields){
-        if(error){
+    db.query("SELECT * FROM usuario WHERE email = ? AND senha = ?", [email, senha], function (error, results, fields) {
+        if (error) {
             console.error('Erro ao consultar o banco de dados');
             res.status(500).send('Erro interno');
             return;
         }
-        else if(results && results.length > 0){
+        else if (results && results.length > 0) {
             res.redirect("/index.html");
-        } 
-        else{ res.redirect("/");
-    }
-    res.end();
+        }
+        else {
+            res.status(401).send('Email e senha fornecidos são inválidos.');
+        }
+        res.end();
+    })
 })
-})
+
+// Suponha que você tenha uma rota que lida com o login do usuário.
+app.post("/login", (req, res) => {
+    const nomeUsuario = req.body.nome; // Suponha que você obtenha o nome do usuário após o login.
+
+    // Envie o nome do usuário como resposta.
+    res.json({ nomeUsuario });
+});
+
 
 app.post("/usuario/", (req, res) => {
     const nome = req.body.nome;
@@ -62,31 +80,29 @@ app.post("/usuario/", (req, res) => {
     const senha = req.body.senha;
     const confirmasenha = req.body.confirmasenha;
 
-    if (senha !== confirmasenha) {
-        return res.status(400).send('As senhas não coincidem.');
+    if (validar(senha, confirmasenha)) {
+        const q = "INSERT INTO usuario (`nome`, `email`, `senha`, `confirmasenha`) VALUES (?, ?, ?, ?)";
+        const values = [nome, email, senha, confirmasenha];
+
+        db.query(q, values, (err, data) => {
+            if (err) {
+                console.error('Erro ao consultar o banco de dados');
+                return res.status(500).send('Erro interno');
+            } else {
+                res.redirect("/index.html");
+            }
+        });
+    } else {
+        res.status(400).send('As senhas não coincidem!');
     }
-
-    const q = "INSERT INTO usuario (`nome`, `email`, `senha`, `confirmasenha`) VALUES (?, ?, ?, ?)";
-    const values = [nome, email, senha, confirmasenha];
-
-    db.query(q, values, (err, data) => {
-        if (err) {
-            console.error('Erro ao consultar o banco de dados');
-            return res.status(500).send('Erro interno');
-        } else {
-            res.redirect("/index.html");
-        }
-    });
 });
 
 app.use(express.static(__dirname + '/public'));
 
-app.get("/index.html", function(req,res){
+app.get("/index.html", function (req, res) {
     res.sendFile(__dirname + "/index.html");
 })
 
 app.listen(port, () => {
     console.log(`Servidor na porta ${port}`)
 });
-
-

@@ -47,6 +47,20 @@
                         <input type="password" class="form-control" name="confirmasenha" id="confirmasenha" required>
                     </div>
 
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function () {
+                            const form = document.getElementById("form-cadastro");
+                            const senhaInput = document.getElementById("senha");
+                            const confirmasenhaInput = document.getElementById("confirmasenha");
+                        
+                            form.addEventListener("submit", function (event) {
+                                if (senhaInput.value !== confirmasenhaInput.value) {
+                                    alert("As senhas não coincidem!");
+                                    event.preventDefault(); 
+                                }
+                            });
+                        });
+                        </script>       
 
                     <div class="termosuso">
                         <div class="mb-3 form-check">
