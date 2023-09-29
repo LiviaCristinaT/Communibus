@@ -65,15 +65,6 @@ app.post("/", function (req, res) {
     })
 })
 
-// Suponha que você tenha uma rota que lida com o login do usuário.
-app.post("/login", (req, res) => {
-    const nomeUsuario = req.body.nome; // Suponha que você obtenha o nome do usuário após o login.
-
-    // Envie o nome do usuário como resposta.
-    res.json({ nomeUsuario });
-});
-
-
 app.post("/usuario/", (req, res) => {
     const nome = req.body.nome;
     const email = req.body.email;
