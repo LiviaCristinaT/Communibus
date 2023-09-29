@@ -51,24 +51,6 @@ async function main() {
     if (parsedData1.sucesso) {
       const paradas = parsedData1.paradas;
       exibirParadasProximas(paradas, minhaLatitude, minhaLongitude);
-
-      const response2 = await axios.get('http://127.0.0.1:4001/proxy');
-      const rawData = response2.data;
-      const jsonStr = rawData.replace('retornoJSONListaLinhas(', '').slice(0, -1);
-      const parsedData2 = JSON.parse(jsonStr);
-
-      let linhas = parsedData2.linhas;
-      if (Array.isArray(linhas) && linhas.length > 0) {
-        const linhasFiltradas = linhas.filter(linha => {
-          if (linha.paradas) {
-            return linha.paradas.some(parada => paradasProximasCodigos.includes(parada));
-          }
-          return false;
-        });
-
-        console.log("Linhas filtradas:", linhasFiltradas);
-        exibirLinhasOnibus(linhasFiltradas);
-      }
     } else {
       console.error('Falha ao obter paradas próximas:', parsedData1.errorMessage || 'Erro desconhecido');
     }
@@ -86,83 +68,6 @@ function getGeolocation() {
       reject(error);
     });
   });
-}
-
-let minhaLatitude, minhaLongitude;
-
-getGeolocation()
-  .then(position => {
-    minhaLatitude = position.coords.latitude;
-    minhaLongitude = position.coords.longitude;
-    console.log("Latitude1:", minhaLatitude, "Longitude1:", minhaLongitude);
-    return axios.get(`http://127.0.0.1:4001/proxyParadasProximas?latitude=${minhaLatitude}&longitude=${minhaLongitude}`);
-  })
-  .then(response => {
-    const parsedData = JSON.parse(response.data.replace('retornoJSON(', '').slice(0, -1));
-    console.log('Dados parseados:', parsedData);
-    if (parsedData.sucesso) {
-      const paradas = parsedData.paradas;
-      exibirParadasProximas(paradas, minhaLatitude, minhaLongitude);
-      return axios.get('http://127.0.0.1:4001/proxy');  // Encadeie a chamada aqui
-    } else {
-      console.error('Falha ao obter paradas próximas:', parsedData.errorMessage || 'Erro desconhecido');
-    }
-  })
-  .then(response => {
-    console.log("Dados brutos da API:", response.data);  // Adicione esta linha
-    const rawData = response.data;
-    const jsonStr = rawData.replace('retornoJSONListaLinhas(', '').slice(0, -1);
-    const parsedData = JSON.parse(jsonStr);
-
-    let linhas = parsedData.linhas;
-    if (Array.isArray(linhas) && linhas.length > 0) {
-      const firstElement = linhas[0];
-      if (typeof firstElement === 'string') {
-        try {
-          const jsonString = '[' + firstElement.replace(/'/g, '"') + ']';
-          linhas = JSON.parse(jsonString);
-        } catch (e) {
-          console.error('Erro ao analisar JSON:', e);
-        }
-      }
-    }
-
-    if (Array.isArray(linhas)) {
-      // Filtrar linhas com base nas paradas próximas
-      const linhasFiltradas = linhas.filter(linha => {
-        if (linha.paradas) {  // Verifique se a propriedade 'paradas' existe
-          return linha.paradas.some(parada => paradasProximasCodigos.includes(parada));
-        }
-        return false;  // Se 'paradas' não existir, a linha não será incluída
-      });
-
-      console.log("Linhas filtradas:", linhasFiltradas);  // Adicione esta linha
-
-
-      if (Array.isArray(linhasFiltradas)) {
-        exibirLinhasOnibus(linhasFiltradas);
-      }
-    }
-  })
-
-  .catch(error => {
-    console.error('Erro:', error);
-  });
-
-function calcularDistancia(lat1, lon1, lat2, lon2) {
-  const R = 6371e3;
-  const lat1Rad = lat1 * (Math.PI / 180);
-  const lat2Rad = lat2 * (Math.PI / 180);
-  const deltaLat = (lat2 - lat1) * (Math.PI / 180);
-  const deltaLon = (lon2 - lon1) * (Math.PI / 180);
-
-  const a = Math.sin(deltaLat / 2) * Math.sin(deltaLat / 2) +
-    Math.cos(lat1Rad) * Math.cos(lat2Rad) *
-    Math.sin(deltaLon / 2) * Math.sin(deltaLon / 2);
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-  const distancia = R * c;
-  return distancia;
 }
 
 function exibirParadasProximas(paradas, minhaLatitude, minhaLongitude) {
@@ -187,12 +92,28 @@ function exibirParadasProximas(paradas, minhaLatitude, minhaLongitude) {
     card.appendChild(descricao);
     card.appendChild(distanciaElemento);
 
+    card.addEventListener('click', async () => {
+      console.log('Card clicado!');
+      const response2 = await axios.get('http://127.0.0.1:4001/proxy');
+      console.log('Resposta da API:', response2);
+      const rawData = response2.data;
+      const jsonStr = rawData.replace('retornoJSONListaLinhas(', '').slice(0, -1);
+      const parsedData2 = JSON.parse(jsonStr);
+
+      let linhas = parsedData2.linhas;
+      if (Array.isArray(linhas) && linhas.length > 0) {
+        const linhasFiltradas = linhas.filter(linha => linha.paradas && linha.paradas.includes(parada.cod));
+        exibirLinhasOnibus(linhasFiltradas);
+      }
+    });
+
     paradasDiv.appendChild(card);
   });
 }
 
 function exibirLinhasOnibus(linhas) {
   const linhasDiv = document.getElementById('linhasDiv');
+  linhasDiv.innerHTML = ''; // Limpar as linhas de ônibus exibidas anteriormente
   linhas.forEach(linha => {
     const card = document.createElement('div');
     card.className = 'card';
@@ -213,5 +134,25 @@ function exibirLinhasOnibus(linhas) {
     linhasDiv.appendChild(card);
   });
 }
+
+
+function calcularDistancia(lat1, lon1, lat2, lon2) {
+  const R = 6371e3;
+  const lat1Rad = lat1 * (Math.PI / 180);
+  const lat2Rad = lat2 * (Math.PI / 180);
+  const deltaLat = (lat2 - lat1) * (Math.PI / 180);
+  const deltaLon = (lon2 - lon1) * (Math.PI / 180);
+
+  const a = Math.sin(deltaLat / 2) * Math.sin(deltaLat / 2) +
+    Math.cos(lat1Rad) * Math.cos(lat2Rad) *
+    Math.sin(deltaLon / 2) * Math.sin(deltaLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+  const distancia = R * c;
+  return distancia;
+}
+
+// Chama a função main quando a página é carregada
+window.addEventListener('load', main);
 
 

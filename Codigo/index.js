@@ -52,7 +52,14 @@ app.post("/", function(req,res){
 })
 })
 
-
+app.get("/linhas", async (req, res) => {
+    const linhas = await getLinhasDeOnibus();
+    
+    // Vamos adicionar um log aqui para saber o que estamos retornando
+    console.log("Dados a serem enviados para o frontend:", linhas);
+    
+    res.json({ linhas });
+  });
 
 
 app.post("/usuario/", (req, res) =>{

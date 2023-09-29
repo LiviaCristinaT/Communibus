@@ -31,6 +31,8 @@ body {
     flex: 0 0 auto;
     width: 200px;
     /* ... outros estilos do card */
+    cursor: pointer;
+
   }
   
 
