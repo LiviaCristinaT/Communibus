@@ -91,6 +91,11 @@ label {
     text-transform: uppercase;
 }
 
+label{
+    display: block;
+    text-align: left;
+}
+
 .ptermos,
 .modal-title {
     color: #000;
