@@ -40,11 +40,26 @@
                     <div id="linhasDiv" class="carousel">
                     </div>
                 </div> -->
-                    <h2>Paradas Próximas</h2>
-                    <div id="paradasDiv" class="carousel">
-                        <!-- Cards de paradas próximas serão inseridos aqui -->
+                <h2>Paradas Próximas</h2>
+                <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                    <div class="carousel-inner" id="paradasCarrossel">
+                        <!-- Os cards das paradas serão inseridos aqui pelo JavaScript -->
                     </div>
+                    <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Anterior</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Próximo</span>
+                    </a>
+                </div>
+
             </div>
+            <div class="row">
+                <div id="map" style="height: 400px; width: 100%;"></div>
+            </div>
+
         </div>
     </main>
 
@@ -52,7 +67,16 @@
 
     </footer>
 
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCd2v5JdVNpMfjSm41NHwyztfdtrB7dg1Q&callback=initMap"></script>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
         integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"

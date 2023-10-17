@@ -35,6 +35,55 @@
 // sismobile.js
 //const axios = require('axios');
 // Chamada de API para obter linhas de ônibus
+
+function getGeolocation() {
+  return new Promise((resolve, reject) => {
+    navigator.geolocation.getCurrentPosition(resolve, (error) => {
+      if (error.code === 1) {
+        alert('Por favor, permita o acesso à sua localização para encontrar paradas de ônibus próximas.');
+      }
+      reject(error);
+    });
+  });
+}
+var minhaLatitude, minhaLongitude;
+
+if (navigator.geolocation) {
+  navigator.geolocation.getCurrentPosition(function(position) {
+      minhaLatitude = position.coords.latitude;
+      minhaLongitude = position.coords.longitude;
+      console.log("Geolocalização:", minhaLatitude, minhaLongitude); // Adicione esta linha
+      initMap();
+  });
+} else {
+  console.log("Geolocalização não é suportada por este navegador.");
+}
+
+var map;
+
+function initMap() {
+  var options = {
+      zoom: 16,
+      center: {lat: minhaLatitude, lng: minhaLongitude}
+  }
+  map = new google.maps.Map(document.getElementById('map'), options);
+
+  // Adiciona um marcador para a geolocalização do usuário
+  var userLocationMarker = new google.maps.Marker({
+      position: {lat: minhaLatitude, lng: minhaLongitude},
+      map: map,
+      icon: {
+          path: google.maps.SymbolPath.CIRCLE,
+          scale: 10,
+          fillColor: "#00F",
+          fillOpacity: 0.8,
+          strokeWeight: 0
+      },
+      title: 'Sua localização'
+  });
+}
+
+
 let paradasProximasCodigos = [];
 
 async function main() {
@@ -59,23 +108,20 @@ async function main() {
   }
 }
 
-function getGeolocation() {
-  return new Promise((resolve, reject) => {
-    navigator.geolocation.getCurrentPosition(resolve, (error) => {
-      if (error.code === 1) {
-        alert('Por favor, permita o acesso à sua localização para encontrar paradas de ônibus próximas.');
-      }
-      reject(error);
-    });
-  });
-}
+
 
 function exibirParadasProximas(paradas, minhaLatitude, minhaLongitude) {
-  const paradasDiv = document.getElementById('paradasDiv');
-  paradas.forEach(parada => {
-    paradasProximasCodigos.push(parada.cod);
+  const paradasCarrossel = document.getElementById('paradasCarrossel');
+  
+  paradas.slice(0, 10).forEach((parada, index) => {    paradasProximasCodigos.push(parada.cod);
+    console.log("Parada:", parada.y, parada.x); // Adicione esta linha
     console.log("Latitude2:", parada.y, "Longitude2:", parada.x);
     const distancia = calcularDistancia(minhaLatitude, minhaLongitude, parada.y, parada.x) / 1000;
+    var marker = new google.maps.Marker({
+      position: { lat: parseFloat(parada.y), lng: parseFloat(parada.x) },
+      map: map,
+      title: parada.desc
+    });
     const card = document.createElement('div');
     card.className = 'card';
 
@@ -106,7 +152,11 @@ function exibirParadasProximas(paradas, minhaLatitude, minhaLongitude) {
       }
     });
 
-    paradasDiv.appendChild(card);
+    const carouselItem = document.createElement('div');
+        carouselItem.className = index === 0 ? 'carousel-item active' : 'carousel-item';
+
+        carouselItem.appendChild(card);
+        paradasCarrossel.appendChild(carouselItem);
   });
 }
 
