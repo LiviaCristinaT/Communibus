@@ -4,6 +4,29 @@
     margin: 16px;
     border-radius: 8px;
 }
+#carouselExampleControls .carousel-control-prev,
+#carouselExampleControls .carousel-control-next {
+    z-index: 1050; /* Valor mais alto para garantir que esteja acima dos cards */
+    width: 5%; /* Reduzir a largura para evitar sobreposição */
+}
+#carouselExampleControls .carousel-inner {
+    
+    justify-content: center;
+    align-items: center;
+
+}
+#carouselExampleControls .carousel-item {
+    justify-content: center;
+    align-items: center;
+
+}
+
+
+#map { /* Substitua 'idDoSeuMapa' pelo ID real do seu elemento de mapa */
+    margin-top: 25px; /* Ajuste este valor conforme necessário */
+}
+
+
 h2{
 
 text-align: center;
@@ -30,8 +53,7 @@ body {
     gap: 16px;
   }
   
-.card {
-    flex: 0 0 auto;
+  .card {
     width: 200px;
     /* ... outros estilos do card */
     cursor: pointer;

@@ -35,6 +35,7 @@
 // sismobile.js
 //const axios = require('axios');
 // Chamada de API para obter linhas de ônibus
+let markers = []; // Array para armazenar os marcadores
 
 function getGeolocation() {
   return new Promise((resolve, reject) => {
@@ -49,11 +50,11 @@ function getGeolocation() {
 var minhaLatitude, minhaLongitude;
 
 if (navigator.geolocation) {
-  navigator.geolocation.getCurrentPosition(function(position) {
-      minhaLatitude = position.coords.latitude;
-      minhaLongitude = position.coords.longitude;
-      console.log("Geolocalização:", minhaLatitude, minhaLongitude); // Adicione esta linha
-      initMap();
+  navigator.geolocation.getCurrentPosition(function (position) {
+    minhaLatitude = position.coords.latitude;
+    minhaLongitude = position.coords.longitude;
+    console.log("Geolocalização:", minhaLatitude, minhaLongitude); // Adicione esta linha
+    initMap();
   });
 } else {
   console.log("Geolocalização não é suportada por este navegador.");
@@ -63,23 +64,23 @@ var map;
 
 function initMap() {
   var options = {
-      zoom: 16,
-      center: {lat: minhaLatitude, lng: minhaLongitude}
+    zoom: 16,
+    center: { lat: minhaLatitude, lng: minhaLongitude }
   }
   map = new google.maps.Map(document.getElementById('map'), options);
 
   // Adiciona um marcador para a geolocalização do usuário
   var userLocationMarker = new google.maps.Marker({
-      position: {lat: minhaLatitude, lng: minhaLongitude},
-      map: map,
-      icon: {
-          path: google.maps.SymbolPath.CIRCLE,
-          scale: 10,
-          fillColor: "#00F",
-          fillOpacity: 0.8,
-          strokeWeight: 0
-      },
-      title: 'Sua localização'
+    position: { lat: minhaLatitude, lng: minhaLongitude },
+    map: map,
+    icon: {
+      path: google.maps.SymbolPath.CIRCLE,
+      scale: 10,
+      fillColor: "#00F",
+      fillOpacity: 0.8,
+      strokeWeight: 0
+    },
+    title: 'Sua localização'
   });
 }
 
@@ -112,16 +113,18 @@ async function main() {
 
 function exibirParadasProximas(paradas, minhaLatitude, minhaLongitude) {
   const paradasCarrossel = document.getElementById('paradasCarrossel');
-  
-  paradas.slice(0, 10).forEach((parada, index) => {    paradasProximasCodigos.push(parada.cod);
+
+  paradas.slice(0, 10).forEach((parada, index) => {
+    paradasProximasCodigos.push(parada.cod);
     console.log("Parada:", parada.y, parada.x); // Adicione esta linha
     console.log("Latitude2:", parada.y, "Longitude2:", parada.x);
     const distancia = calcularDistancia(minhaLatitude, minhaLongitude, parada.y, parada.x) / 1000;
     var marker = new google.maps.Marker({
-      position: { lat: parseFloat(parada.y), lng: parseFloat(parada.x) },
+      position: new google.maps.LatLng(parada.y, parada.x),
       map: map,
-      title: parada.desc
+      title: parada.nome
     });
+    markers.push(marker);
     const card = document.createElement('div');
     card.className = 'card';
 
@@ -153,10 +156,10 @@ function exibirParadasProximas(paradas, minhaLatitude, minhaLongitude) {
     });
 
     const carouselItem = document.createElement('div');
-        carouselItem.className = index === 0 ? 'carousel-item active' : 'carousel-item';
+    carouselItem.className = index === 0 ? 'carousel-item active' : 'carousel-item';
 
-        carouselItem.appendChild(card);
-        paradasCarrossel.appendChild(carouselItem);
+    carouselItem.appendChild(card);
+    paradasCarrossel.appendChild(carouselItem);
   });
 }
 
@@ -200,6 +203,19 @@ function calcularDistancia(lat1, lon1, lat2, lon2) {
   const distancia = R * c;
   return distancia;
 }
+
+$(document).ready(function(){
+  $('#carouselExampleControls').on('slide.bs.carousel', function (event) {
+      // Remova o destaque de todos os marcadores
+      markers.forEach(marker => {
+          marker.setIcon(null);
+      });
+
+      // Destaque o marcador correspondente ao card atual
+      const currentIndex = event.to;
+      markers[currentIndex].setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png'); // Você pode usar qualquer ícone personalizado aqui
+  });
+});
 
 // Chama a função main quando a página é carregada
 window.addEventListener('load', main);
