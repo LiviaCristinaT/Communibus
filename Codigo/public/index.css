@@ -125,6 +125,9 @@ label{
     text-transform: none;
 }
 
+h5{
+    text-transform: uppercase;
+}
 .termosuso {
     padding-top: 0.7rem;
     width: max-content;
@@ -138,6 +141,7 @@ label{
 .cadastro {
     padding: 0.8rem;
     text-align: center;
+    padding-block-end: inherit;
 }
 
 .container-sm,
@@ -181,6 +185,12 @@ label{
   
   .form-check-input:focus[type=checkbox] {
     box-shadow: 0 0 0 0.1px #FF5200;
+}
+
+.S9gUrf-YoZ4jf, .S9gUrf-YoZ4jf *{
+    display: flex;
+    justify-content: center;
+   border-radius: 10px;
 }
 
 @media screen and (max-width: 768px) {

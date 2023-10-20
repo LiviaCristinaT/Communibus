@@ -90,7 +90,7 @@ app.post("/usuario/", (req, res) => {
 
 app.use(express.static(__dirname + '/public'));
 
-app.get("/index.html", function (req, res) {
+app.get("/index.html", (req, res) => {
     res.sendFile(__dirname + "/index.html");
 })
 
