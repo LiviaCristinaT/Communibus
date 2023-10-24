@@ -1,3 +1,5 @@
+
+
 const axios = require('axios');
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -5,24 +7,11 @@ const cors = require('cors');
 const db = require('./db');
 
 const app = express();
-const port = 4001;
+const PORT = 4001;
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.get('/proxyPrevisoes', async (req, res) => {
-    const { codParada } = req.query;
-    try {
-        const response = await axios.get(`http://mobile-l.sitbus.com.br:6060/siumobile-ws-v01/rest/ws/buscarPrevisoes/${codParada}/0/retornoJSON`);
-        res.json(response.data);
-    } catch (error) {
-        console.error('Erro ao fazer a requisição:', error);
-        if (error.response) {
-            console.error('Detalhes do erro:', error.response.data);
-        }
-        res.status(500).send('Erro interno');
-    }
-});
 
 
 app.get('/proxy', async (req, res) => {
@@ -32,6 +21,19 @@ app.get('/proxy', async (req, res) => {
     } catch (error) {
         console.error('Erro ao fazer a requisição:', error);
         res.status(500).send('Erro interno');
+    }
+});
+app.get('/proxyPrevisoesPorCodigo', async (req, res) => {
+    const codParada = req.query.codParada;
+    if (!codParada) {
+        return res.status(400).send('codParada é obrigatório');
+    }
+
+    try {
+        const response = await axios.get('http://mobile-l.sitbus.com.br:6060/siumobile-ws-v01/rest/ws/buscarPrevisoes/${codParada}/0/retornoJSON');
+        res.send(response.data);
+    } catch (error) {
+        res.status(500).send('Erro ao buscar previsões');
     }
 });
 
@@ -110,4 +112,8 @@ app.get("/index.html", (req, res) => {
 
 app.listen(port, () => {
     console.log(`Servidor na porta ${port}`)
+});
+
+app.listen(PORT, () => {
+    console.log(`Servidor rodando na porta ${PORT}`);
 });

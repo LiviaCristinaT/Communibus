@@ -109,19 +109,22 @@ async function main() {
   }
 }
 
-async function obterPrevisoes(codigoParada) {
-  const response = await axios.get(`http://mobile-l.sitbus.com.br:6060/siumobile-ws-v01/rest/ws/buscarPrevisoes/${codParada}/0/retornoJSON`);
-  if (response.data.sucesso) {
-    return response.data.previsoes;
-  } else {
-    console.error('Erro ao obter previsões');
-    return [];
-  }
+function obterPrevisoes(codParada) {
+  fetch('http://127.0.0.1:4001/proxyPrevisoesPorCodigo?codParada=' + codParada)
+  .then(response => response.json())
+  .then(data => {
+      exibirPrevisoes(data);
+  })
+  .catch(error => {
+      console.error("Erro ao obter previsões:", error);
+  });
 }
+
+
 
 function exibirParadasProximas(paradas, minhaLatitude, minhaLongitude) {
   const paradasCarrossel = document.getElementById('paradasCarrossel');
-
+  
   paradas.slice(0, 10).forEach((parada, index) => {
     paradasProximasCodigos.push(parada.cod);
     console.log("Parada:", parada.y, parada.x); // Adicione esta linha
@@ -179,31 +182,29 @@ function exibirParadasProximas(paradas, minhaLatitude, minhaLongitude) {
 function exibirLinhasOnibus(linhas, previsoes) {
   const linhasDiv = document.getElementById('linhasOnibus');
   linhasDiv.innerHTML = ''; // Limpar as linhas de ônibus exibidas anteriormente
-  console.log("Linhas:", linhas); // Log para depuração
-  console.log("Previsões:", previsoes); // Log para depuração
   linhas.forEach(linha => {
-    const card = document.createElement('div');
-    card.className = 'card';
+      const card = document.createElement('div');
+      card.className = 'card';
 
-    const codigo = document.createElement('h3');
-    codigo.textContent = `Código: ${linha.cod}`;
+      const codigo = document.createElement('h3');
+      codigo.textContent = `Código: ${linha.cod}`;
 
-    const sgl = document.createElement('p');
-    sgl.textContent = `Linha: ${linha.sgl}`;
+      const sgl = document.createElement('p');
+      sgl.textContent = `Linha: ${linha.sgl}`;
 
-    const nome = document.createElement('p');
-    nome.textContent = `Nome: ${linha.nom}`;
+      const nome = document.createElement('p');
+      nome.textContent = `Nome: ${linha.nom}`;
 
-    const previsao = previsoes.find(p => p.lin === linha.cod);
-    const tempo = document.createElement('p');
-    tempo.textContent = previsao ? `Previsão: ${previsao.pre}` : 'Previsão não disponível';
+      const previsao = previsoes.find(p => p.lin === linha.cod);
+      const tempo = document.createElement('p');
+      tempo.textContent = previsao ? `Previsão: ${previsao.pre}` : 'Previsão não disponível';
 
-    card.appendChild(codigo);
-    card.appendChild(sgl);
-    card.appendChild(nome);
-    card.appendChild(tempo);
+      card.appendChild(codigo);
+      card.appendChild(sgl);
+      card.appendChild(nome);
+      card.appendChild(tempo);
 
-    linhasDiv.appendChild(card);
+      linhasDiv.appendChild(card);
   });
 }
 
