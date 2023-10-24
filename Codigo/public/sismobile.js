@@ -110,17 +110,14 @@ async function main() {
 }
 
 async function obterPrevisoes(codigoParada) {
-  const response = await axios.get(`http://127.0.0.1:4001/proxy?codigoParada=${codigoParada}`);
-  const rawData = response.data.data; // Acesse a propriedade "data" do objeto de resposta para obter a string JSONP
-  const jsonStr = rawData.replace('retornoJSONListaLinhas(', '').slice(0, -1);
-  const parsedData = JSON.parse(jsonStr);
-  return parsedData.previsoes;
+  const response = await axios.get(`http://mobile-l.sitbus.com.br:6060/siumobile-ws-v01/rest/ws/buscarPrevisoes/${codParada}/0/retornoJSON`);
+  if (response.data.sucesso) {
+    return response.data.previsoes;
+  } else {
+    console.error('Erro ao obter previsões');
+    return [];
+  }
 }
-
-
-
-
-
 
 function exibirParadasProximas(paradas, minhaLatitude, minhaLongitude) {
   const paradasCarrossel = document.getElementById('paradasCarrossel');
@@ -158,17 +155,19 @@ function exibirParadasProximas(paradas, minhaLatitude, minhaLongitude) {
       const rawData = response2.data;
       const jsonStr = rawData.replace('retornoJSONListaLinhas(', '').slice(0, -1);
       const parsedData2 = JSON.parse(jsonStr);
-  
+
       let linhas = parsedData2.linhas;
       if (Array.isArray(linhas) && linhas.length > 0) {
-          const linhasFiltradas = linhas.filter(linha => linha.paradas && linha.paradas.includes(parada.cod));
-          const previsoes = await obterPrevisoes(parada.cod);
-          exibirLinhasOnibus(linhasFiltradas, previsoes);
-          // Abre o modal
-          $('#paradaModal').modal('show');
+        const linhasFiltradas = linhas.filter(linha => linha.paradas && linha.paradas.includes(parada.cod));
+        const previsoes = await obterPrevisoes(parada.cod);
+        console.log('Previsões recebidas:', previsoes);
+
+        exibirLinhasOnibus(linhasFiltradas, previsoes);
+        // Abre o modal
+        $('#paradaModal').modal('show');
       }
-  });
-  
+    });
+
     const carouselItem = document.createElement('div');
     carouselItem.className = index === 0 ? 'carousel-item active' : 'carousel-item';
 
@@ -183,28 +182,28 @@ function exibirLinhasOnibus(linhas, previsoes) {
   console.log("Linhas:", linhas); // Log para depuração
   console.log("Previsões:", previsoes); // Log para depuração
   linhas.forEach(linha => {
-      const card = document.createElement('div');
-      card.className = 'card';
+    const card = document.createElement('div');
+    card.className = 'card';
 
-      const codigo = document.createElement('h3');
-      codigo.textContent = `Código: ${linha.cod}`;
+    const codigo = document.createElement('h3');
+    codigo.textContent = `Código: ${linha.cod}`;
 
-      const sgl = document.createElement('p');
-      sgl.textContent = `Linha: ${linha.sgl}`;
+    const sgl = document.createElement('p');
+    sgl.textContent = `Linha: ${linha.sgl}`;
 
-      const nome = document.createElement('p');
-      nome.textContent = `Nome: ${linha.nom}`;
+    const nome = document.createElement('p');
+    nome.textContent = `Nome: ${linha.nom}`;
 
-      const previsao = previsoes.find(p => p.lin === linha.cod);
-      const tempo = document.createElement('p');
-      tempo.textContent = previsao ? `Previsão: ${previsao.pre}` : 'Previsão não disponível';
+    const previsao = previsoes.find(p => p.lin === linha.cod);
+    const tempo = document.createElement('p');
+    tempo.textContent = previsao ? `Previsão: ${previsao.pre}` : 'Previsão não disponível';
 
-      card.appendChild(codigo);
-      card.appendChild(sgl);
-      card.appendChild(nome);
-      card.appendChild(tempo);
+    card.appendChild(codigo);
+    card.appendChild(sgl);
+    card.appendChild(nome);
+    card.appendChild(tempo);
 
-      linhasDiv.appendChild(card);
+    linhasDiv.appendChild(card);
   });
 }
 
@@ -227,16 +226,16 @@ function calcularDistancia(lat1, lon1, lat2, lon2) {
   return distancia;
 }
 
-$(document).ready(function(){
+$(document).ready(function () {
   $('#carouselExampleControls').on('slide.bs.carousel', function (event) {
-      // Remova o destaque de todos os marcadores
-      markers.forEach(marker => {
-          marker.setIcon(null);
-      });
+    // Remova o destaque de todos os marcadores
+    markers.forEach(marker => {
+      marker.setIcon(null);
+    });
 
-      // Destaque o marcador correspondente ao card atual
-      const currentIndex = event.to;
-      markers[currentIndex].setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png'); // Você pode usar qualquer ícone personalizado aqui
+    // Destaque o marcador correspondente ao card atual
+    const currentIndex = event.to;
+    markers[currentIndex].setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png'); // Você pode usar qualquer ícone personalizado aqui
   });
 });
 

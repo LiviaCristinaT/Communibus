@@ -10,6 +10,21 @@ const port = 4001;
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.get('/proxyPrevisoes', async (req, res) => {
+    const { codParada } = req.query;
+    try {
+        const response = await axios.get(`http://mobile-l.sitbus.com.br:6060/siumobile-ws-v01/rest/ws/buscarPrevisoes/${codParada}/0/retornoJSON`);
+        res.json(response.data);
+    } catch (error) {
+        console.error('Erro ao fazer a requisição:', error);
+        if (error.response) {
+            console.error('Detalhes do erro:', error.response.data);
+        }
+        res.status(500).send('Erro interno');
+    }
+});
+
+
 app.get('/proxy', async (req, res) => {
     try {
         const response = await axios.get('http://mobile-l.sitbus.com.br:6060/siumobile-ws-v01/rest/ws/buscarLinhas/retornoJSONListaLinhas');
@@ -40,7 +55,6 @@ function validar(senha, confirmasenha) {
     }
 }
 
-app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get("/", function (req, res) {
     res.sendFile(__dirname + "/public/login.html");
