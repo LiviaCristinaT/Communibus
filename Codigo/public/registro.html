@@ -66,97 +66,48 @@
                         <div class="mb-3 form-check">
                             <input type="checkbox" class="form-check-input" id="inputCheck" required>
                             <label for="inputCheck" class="form-check-label">Li e aceito os <a href="staticBackdrop"
-                                    data-bs-toggle="modal" data-bs-target="#staticBackdrop">termos de uso</a>
+                                    data-bs-toggle="modal" data-bs-target="#staticBackdrop" onclick="abrirTermosUso()">termos de uso</a>
                             </label>
                         </div>
-
 
                         <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
                             tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="staticBackdropLabel">Termos de uso</h5>
+                                        <h5 class="modal-title" id="staticBackdropLabel"></h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <p class="ptermos">
-                                            <b>Última Atualização: </b> <i> 22 de Setembro de 2023 </i><br>
-                                            Bem-vindo ao CommuniBus, uma plataforma que fornece informações sobre linhas
-                                            de ônibus. Ao acessar ou usar o CommuniBus (doravante referido como "nós",
-                                            "nossa" ou "plataforma"), você concorda em cumprir e estar vinculado aos
-                                            seguintes Termos de Uso. Leia atentamente os termos abaixo antes de utilizar
-                                            nossa plataforma. Se você não concordar com algum destes termos, não use o
-                                            CommuniBus. <br>
-                                            <b> Uso da Plataforma: </b> O CommuniBus é uma plataforma destinada a
-                                            fornecer informações sobre linhas de ônibus e rotas de transporte público.
-                                            <br>
-                                            Você deve usar o CommuniBus apenas para fins legais e de acordo com as leis
-                                            e regulamentações locais, estaduais, nacionais e internacionais aplicáveis.
-                                            <br>
-                                            <b>Cadastro:</b> Alguns recursos da plataforma podem exigir que você se
-                                            cadastre ou forneça informações pessoais. Ao fazer isso, você concorda em
-                                            fornecer informações precisas, atualizadas e completas. <br>
-                                            Você é responsável por manter a confidencialidade de suas credenciais de
-                                            login. <br>
-                                            <b> Conteúdo da Plataforma: </b>
-                                            Todo o conteúdo fornecido no CommuniBus é apenas para fins informativos. Não
-                                            garantimos a precisão, integridade ou atualização das informações. <br>
-                                            Não nos responsabilizamos por quaisquer decisões tomadas com base nas
-                                            informações fornecidas pela plataforma. <br>
-                                            <b> Propriedade Intelectual: </b>
-                                            Todo o conteúdo, logotipos, marcas registradas e outros direitos de
-                                            propriedade intelectual exibidos na plataforma são de nossa propriedade ou
-                                            licenciados por terceiros. Você não possui direitos sobre eles. <br>
-                                            Você não pode copiar, reproduzir, distribuir ou criar obras derivadas a
-                                            partir do conteúdo da plataforma sem nossa permissão. <br>
-                                            <b> Links para Terceiros: </b>
-                                            A plataforma pode conter links para sites de terceiros. Não controlamos nem
-                                            somos responsáveis pelo conteúdo ou práticas de privacidade desses sites.
-                                            <br>
-                                            A inclusão de links para sites de terceiros não implica nosso endosso ou
-                                            afiliação a eles. <br>
-                                            <b> Privacidade: </b>
-                                            Suas informações pessoais serão tratadas de acordo com nossa Política de
-                                            Privacidade. Ao usar a plataforma, você concorda com a coleta e o uso de
-                                            suas informações conforme descrito na política de privacidade. <br>
-                                            <b> Alterações nos Termos de Uso: </b>
-                                            Reservamo-nos o direito de modificar ou revisar estes Termos de Uso a
-                                            qualquer momento. As alterações entrarão em vigor após a publicação das
-                                            versões revisadas na plataforma. <br>
-                                            Recomendamos que você reveja periodicamente os Termos de Uso para se manter
-                                            informado sobre quaisquer alterações. <br>
-                                            <b>Encerramento do Acesso: </b>
-                                            Reservamo-nos o direito de encerrar ou suspender seu acesso à plataforma, a
-                                            nosso critério, sem aviso prévio, se você violar estes Termos de Uso. <br>
-                                            <b> Lei Aplicável: </b>
-                                            Estes Termos de Uso são regidos pelas leis do Brasil. Qualquer disputa
-                                            relacionada aos Termos de Uso será submetida à jurisdição exclusiva dos
-                                            tribunais brasileiros. <br>
-                                            <b> Contato: </b>
-                                            Se você tiver alguma dúvida ou preocupação sobre estes Termos de Uso, entre
-                                            em contato conosco pelo e-mail communibus@contato.com. <br>
-                                            Ao continuar a usar o CommuniBus, você concorda em cumprir estes Termos de
-                                            Uso. Se você não concordar com qualquer parte destes termos, não utilize
-                                            nossa plataforma. Agradecemos por escolher o CommuniBus para acessar
-                                            informações sobre transporte público e linhas de ônibus. <br>
-
-                                        </p>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Li e
-                                            aceito os termos de uso.</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <button type="submit" class="btn btn-primary">Enviar</button>
+                    <script>
+                        function abrirTermosUso(){
+                            var modalBody = document.querySelector(".modal-body");
+
+                            var xhr = new XMLHttpRequest();
+                            xhr.open("GET", "termos.html", true);
+                            xhr.onreadystatechange = function() {
+                                if(xhr.readyState === 4 && xhr.status === 200){
+                                    modalBody.innerHTML = xhr.responseText;
+                                }
+                            };
+                            
+                            xhr.send();
+
+                            $('#staticBackdrop').modal('show');
+                        }
+                    </script>
+                    <button type="submit" class="btn btn-primary">Enviar</button>             
 
                     <div class="cadastro">
                         <p class="descricao">Já possui uma conta? Faça o <a href="login.html">login</a> </p>
+                        <div class="buttonGoogle" id="botaoGoogle"></div>
                     </div>
 
                 </form>
@@ -169,6 +120,9 @@
     </footer>
 
 
+    <script src="./google.js"></script>
+    <script src="https://accounts.google.com/gsi/client" async></script>
+    <script src="https://unpkg.com/jwt-decode/build/jwt-decode.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
         integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
         crossorigin="anonymous"></script>
