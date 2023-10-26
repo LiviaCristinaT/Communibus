@@ -12,7 +12,24 @@ const PORT = 4001;
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.get('/parada/:codParada', async (req, res) => {
+    const codParada = req.params.codParada;
 
+    try {
+        // Solicitando previsões de uma Parada
+        const response = await axios.get(`http://mobile-l.sitbus.com.br:6060/siumobile-ws-v01/rest/ws/buscarPrevisoes/${codParada}/0/retornoJSON`);
+        
+        if (response.data.sucesso) {
+            const previsoes = response.data.previsoes;
+            // Renderizar a página com as previsões
+            res.render('parada', { previsoes });
+        } else {
+            res.status(500).send('Erro ao buscar previsões.');
+        }
+    } catch (error) {
+        res.status(500).send('Erro ao comunicar com a API.');
+    }
+});
 
 app.get('/proxy', async (req, res) => {
     try {
@@ -30,7 +47,7 @@ app.get('/proxyPrevisoesPorCodigo', async (req, res) => {
     }
 
     try {
-        const response = await axios.get('http://mobile-l.sitbus.com.br:6060/siumobile-ws-v01/rest/ws/buscarPrevisoes/${codParada}/0/retornoJSON');
+        const response = await axios.get(`http://mobile-l.sitbus.com.br:6060/siumobile-ws-v01/rest/ws/buscarPrevisoes/${codParada}/0/retornoJSON`);
         res.send(response.data);
     } catch (error) {
         res.status(500).send('Erro ao buscar previsões');
@@ -110,9 +127,6 @@ app.get("/index.html", (req, res) => {
     res.sendFile(__dirname + "/index.html");
 })
 
-app.listen(port, () => {
-    console.log(`Servidor na porta ${port}`)
-});
 
 app.listen(PORT, () => {
     console.log(`Servidor rodando na porta ${PORT}`);

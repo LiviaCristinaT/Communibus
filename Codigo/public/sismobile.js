@@ -34,27 +34,21 @@
 // sismobile.js
 // sismobile.js
 //const axios = require('axios');
-// Chamada de API para obter linhas de ônibus
-let markers = []; // Array para armazenar os marcadores
+let markers = [];
+let minhaLatitude, minhaLongitude;
+let paradasProximasCodigos = []; // Defina no escopo global
 
 function getGeolocation() {
   return new Promise((resolve, reject) => {
-    navigator.geolocation.getCurrentPosition(resolve, (error) => {
-      if (error.code === 1) {
-        alert('Por favor, permita o acesso à sua localização para encontrar paradas de ônibus próximas.');
-      }
-      reject(error);
-    });
+    navigator.geolocation.getCurrentPosition(resolve, reject);
   });
 }
-var minhaLatitude, minhaLongitude;
 
 if (navigator.geolocation) {
   navigator.geolocation.getCurrentPosition(function (position) {
     minhaLatitude = position.coords.latitude;
     minhaLongitude = position.coords.longitude;
-    console.log("Geolocalização:", minhaLatitude, minhaLongitude); // Adicione esta linha
-    initMap();
+    initMap(); // Chame initMap somente depois de obter as coordenadas
   });
 } else {
   console.log("Geolocalização não é suportada por este navegador.");
@@ -68,8 +62,6 @@ function initMap() {
     center: { lat: minhaLatitude, lng: minhaLongitude }
   }
   map = new google.maps.Map(document.getElementById('map'), options);
-
-  // Adiciona um marcador para a geolocalização do usuário
   var userLocationMarker = new google.maps.Marker({
     position: { lat: minhaLatitude, lng: minhaLongitude },
     map: map,
@@ -84,19 +76,14 @@ function initMap() {
   });
 }
 
-
-let paradasProximasCodigos = [];
-
 async function main() {
   try {
     const position = await getGeolocation();
     const minhaLatitude = position.coords.latitude;
     const minhaLongitude = position.coords.longitude;
-    console.log("Latitude1:", minhaLatitude, "Longitude1:", minhaLongitude);
 
     const response1 = await axios.get(`http://127.0.0.1:4001/proxyParadasProximas?latitude=${minhaLatitude}&longitude=${minhaLongitude}`);
     const parsedData1 = JSON.parse(response1.data.replace('retornoJSON(', '').slice(0, -1));
-    console.log('Dados parseados:', parsedData1);
 
     if (parsedData1.sucesso) {
       const paradas = parsedData1.paradas;
@@ -110,15 +97,19 @@ async function main() {
 }
 
 function obterPrevisoes(codParada) {
-  fetch('http://127.0.0.1:4001/proxyPrevisoesPorCodigo?codParada=' + codParada)
-  .then(response => response.json())
-  .then(data => {
+  axios.get(`http://mobile-l.sitbus.com.br:6060/siumobile-ws-v01/rest/ws/buscarPrevisoes/${codParada}/0/retornoJSON`)
+    .then(response => {
+      const data = JSON.parse(response.data.replace('retornoJSON(', '').slice(0, -1));
       exibirPrevisoes(data);
-  })
-  .catch(error => {
+    })
+    .catch(error => {
       console.error("Erro ao obter previsões:", error);
-  });
+    });
 }
+
+// ... [restante do código]
+
+window.addEventListener('load', main);
 
 
 
@@ -152,24 +143,8 @@ function exibirParadasProximas(paradas, minhaLatitude, minhaLongitude) {
     card.appendChild(distanciaElemento);
 
     card.addEventListener('click', async () => {
-      console.log('Card clicado!');
-      const response2 = await axios.get('http://127.0.0.1:4001/proxy');
-      console.log('Resposta da API:', response2);
-      const rawData = response2.data;
-      const jsonStr = rawData.replace('retornoJSONListaLinhas(', '').slice(0, -1);
-      const parsedData2 = JSON.parse(jsonStr);
-
-      let linhas = parsedData2.linhas;
-      if (Array.isArray(linhas) && linhas.length > 0) {
-        const linhasFiltradas = linhas.filter(linha => linha.paradas && linha.paradas.includes(parada.cod));
-        const previsoes = await obterPrevisoes(parada.cod);
-        console.log('Previsões recebidas:', previsoes);
-
-        exibirLinhasOnibus(linhasFiltradas, previsoes);
-        // Abre o modal
-        $('#paradaModal').modal('show');
-      }
-    });
+      window.location.href = `/parada/${parada.cod}`; // Redireciona para uma página específica da parada
+  });  
 
     const carouselItem = document.createElement('div');
     carouselItem.className = index === 0 ? 'carousel-item active' : 'carousel-item';
@@ -227,6 +202,7 @@ function calcularDistancia(lat1, lon1, lat2, lon2) {
   return distancia;
 }
 
+
 $(document).ready(function () {
   $('#carouselExampleControls').on('slide.bs.carousel', function (event) {
     // Remova o destaque de todos os marcadores
@@ -234,11 +210,35 @@ $(document).ready(function () {
       marker.setIcon(null);
     });
 
-    // Destaque o marcador correspondente ao card atual
+    // Verifique se o marcador existe antes de tentar acessá-lo
     const currentIndex = event.to;
-    markers[currentIndex].setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png'); // Você pode usar qualquer ícone personalizado aqui
+    if (markers[currentIndex]) {
+      markers[currentIndex].setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
+    }
   });
 });
+
+function initMap() {
+  var options = {
+    zoom: 16,
+    center: { lat: minhaLatitude, lng: minhaLongitude }
+  }
+  map = new google.maps.Map(document.getElementById('map'), options);
+
+  // Adiciona um marcador para a geolocalização do usuário
+  var userLocationMarker = new google.maps.Marker({
+    position: { lat: minhaLatitude, lng: minhaLongitude },
+    map: map,
+    icon: {
+      path: google.maps.SymbolPath.CIRCLE,
+      scale: 10,
+      fillColor: "#00F",
+      fillOpacity: 0.8,
+      strokeWeight: 0
+    },
+    title: 'Sua localização'
+  });
+}
 
 // Chama a função main quando a página é carregada
 window.addEventListener('load', main);
