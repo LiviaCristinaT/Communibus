@@ -193,6 +193,44 @@ h5{
    border-radius: 10px;
 }
 
+.buttonTwitter {
+    background-color: #1DA1F2;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 100px;
+    max-width: 220px;
+    margin: 0 auto; /* Isso centralizará horizontalmente */
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.twitter-icon {
+    margin-right: 5px;
+    width: 10%;
+    height: 10%;
+
+}
+
+.twitterTxt {
+    color: white;
+    font-weight: 450;
+    font-size: small;
+    text-decoration: none;
+}
+
+.buttonTwitter:hover {
+    background-color: #0d8cbb;
+}
+
+
 @media screen and (max-width: 768px) {
     main {
         padding: 1rem;

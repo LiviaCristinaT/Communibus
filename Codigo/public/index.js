@@ -1,16 +1,23 @@
-
-
 const axios = require('axios');
 const express = require('express');
 const bodyParser = require('body-parser');
-const cors = require('cors');
 const db = require('./db');
+const passport = require('passport');
+const session = require('express-session');
+const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+const TwitterStrategy = require('passport-twitter').Strategy;
 
 const app = express();
 const PORT = 4001;
 
-app.use(cors());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(session({
+    secret: '12345',
+    resave: true,
+    saveUninitialized: true,
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.get('/parada/:codParada', async (req, res) => {
     const codParada = req.params.codParada;
@@ -65,61 +72,116 @@ app.get('/proxyParadasProximas', async (req, res) => {
     }
 });
 
-function validar(senha, confirmasenha) {
-    if (senha === confirmasenha) {
-        return true;
-    } else {
-        console.log('As senhas não coincidem!');
-        return false;
-    }
-}
-
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get("/", function (req, res) {
     res.sendFile(__dirname + "/public/login.html");
-})
-
+});
+//Efetuando o login com email e senha
 app.post("/", function (req, res) {
-    var email = req.body.email;
-    var senha = req.body.senha;
+    const email = req.body.email;
+    const senha = req.body.senha;
     db.query("SELECT * FROM usuario WHERE email = ? AND senha = ?", [email, senha], function (error, results, fields) {
         if (error) {
-            console.error('Erro ao consultar o banco de dados');
+            console.error('Erro ao consultar o banco de dados', error);
             res.status(500).send('Erro interno');
             return;
         }
-        else if (results && results.length > 0) {
+        if (results && results.length > 0) {
             res.redirect("/index.html");
+        } else {
+            res.redirect("/");
         }
-        else {
-            res.status(401).send('Email e senha fornecidos são inválidos.');
+    });
+});
+//Cadastro de usuarios pelo formulário padrão
+app.post("/usuario", (req, res) => {
+    const { nome, email, senha, confirmasenha } = req.body;
+
+    // Verificar se senha e confirmasenha coincidem
+    if (senha !== confirmasenha) {
+        return res.status(400).send('As senhas não coincidem.');
+    }
+
+    const q = "INSERT INTO usuario (`nome`, `email`, `senha`, `confirmasenha`) VALUES (?, ?, ?, ?)";
+    const values = [nome, email, senha, confirmasenha];
+
+    db.query(q, values, (err, data) => {
+        if (err) {
+            console.error('Erro ao consultar o banco de dados', err);
+            res.status(500).send('Erro interno');
+            return;
         }
-        res.end();
-    })
-})
+        res.redirect("/index.html");
+    });
+});
 
-app.post("/usuario/", (req, res) => {
-    const nome = req.body.nome;
-    const email = req.body.email;
-    const senha = req.body.senha;
-    const confirmasenha = req.body.confirmasenha;
+//Autenticação e login com Google
+app.get('/auth/google', passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login'] }));
 
-    if (validar(senha, confirmasenha)) {
-        const q = "INSERT INTO usuario (`nome`, `email`, `senha`, `confirmasenha`) VALUES (?, ?, ?, ?)";
-        const values = [nome, email, senha, confirmasenha];
+app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/login' }), (req, res) => {
+    res.redirect('/index.html');
+});
 
-        db.query(q, values, (err, data) => {
+//Autenticação e login com Twitter
+passport.serializeUser((user, done) => {
+    done(null, user.email);
+});
+
+passport.deserializeUser((id, done) => {
+    db.query('SELECT * FROM usuario WHERE email = ?', [id], (err, results) => {
+        if (err) {
+            return done(err, null);
+        }
+        if (results.length === 0) {
+            return done(null, null);
+        }
+        return done(null, results[0]);
+    });
+});
+
+passport.use(
+    new TwitterStrategy({
+        consumerKey: 'm8kZ9aAXPSLBXRiW69zleJRvJ',
+        consumerSecret: 'ZCdagS82bUcU4cyL0jAbH9CMkSSypFJRkXZHOBUJknPs84n7DA',
+        callbackURL: 'http://localhost:4001/auth/twitter/callback',
+    },
+    (token, tokenSecret, profile, done) => {
+        db.query('SELECT * FROM usuario WHERE email = ?', [profile.username], (err, results) => {
             if (err) {
-                console.error('Erro ao consultar o banco de dados');
-                return res.status(500).send('Erro interno');
+                return done(err, null);
+            }
+
+            if (results.length > 0) {
+                const user = results[0];
+                return done(null, user);
             } else {
-                res.redirect("/index.html");
+                const userData = {
+                    nome: profile.displayName,
+                    email: profile.username,
+                };
+
+                db.query('INSERT INTO usuario SET ?', userData, (err, result) => {
+                    if (err) {
+                        return done(err, null);
+                    }
+
+                    userData.username = result.insertUser;
+
+                    return done(null, userData);
+                });
             }
         });
-    } else {
-        res.status(400).send('As senhas não coincidem!');
-    }
-});
+    })
+);
+
+app.get('/auth/twitter', passport.authenticate('twitter'));
+
+app.get('/auth/twitter/callback', passport.authenticate('twitter', {
+    successRedirect: '/index.html',
+    failureRedirect: '/login.html',
+}));
+
 
 app.use(express.static(__dirname + '/public'));
 
