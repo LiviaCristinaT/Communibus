@@ -92,6 +92,18 @@ a:hover {
     background-color: #035;
 }
 
+.btn-outline-secondary {
+    color: #FF5200 !important;
+    border-color: #FF5200 !important;
+}
+
+.btn-outline-secondary:hover {
+    color: #fff !important;
+    background-color: #FF5200 !important;
+    border-color: #FF5200 !important;
+}
+
+
 a {
     color: #FF5200;
 }

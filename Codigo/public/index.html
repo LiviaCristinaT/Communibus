@@ -17,17 +17,19 @@
 </head>
 
 <body>
-    <header class="headerindex">
-        <div class="px-3 py-2 border-bottom mb-3">
-            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-                <img src="CommuniBuss.png" class="imgheader my-2 my-lg-0 me-lg-auto" alt="CommuniBus">
-
-
-                <div class="text-end">
-                    <button type="button" class="btn btn-primary"
-                        onclick="window.location.href = 'login.html'">Sair</button>
-                </div>
-            </div>
+    <header>
+        <div class="header-div" style="display: flex; justify-content: space-between; align-items: center;">
+            <img src="CommuniBuss.png" alt="" class="imgheader">
+            <a id="botaoVoltar" class="btn d-flex" href="./login.html" style="font-size: 10px;">
+                <button type="button" class="btn btn-outline-secondary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-arrow-bar-left" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                            d="M12.5 15a.5.5 0 0 1-.5-.5v-13a.5.5 0 0 1 1 0v13a.5.5 0 0 1-.5.5ZM10 8a.5.5 0 0 1-.5.5H3.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L3.707 7.5H9.5a.5.5 0 0 1 .5.5Z">
+                        </path>
+                    </svg>
+                </button>
+            </a>
         </div>
     </header>
 
@@ -86,7 +88,7 @@
 
     </footer>
 
-   
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
     <!-- jQuery library -->
@@ -103,7 +105,7 @@
         crossorigin="anonymous"></script>
     <script src="./sismobile.js"></script>
     <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCd2v5JdVNpMfjSm41NHwyztfdtrB7dg1Q&callback=initMap"></script>
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCd2v5JdVNpMfjSm41NHwyztfdtrB7dg1Q&callback=initMap"></script>
 </body>
 
 </html>
