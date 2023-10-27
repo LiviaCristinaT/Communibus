@@ -94,15 +94,57 @@ a:hover {
 
 .btn-outline-secondary {
     color: #FF5200 !important;
-    border-color: #FF5200 !important;
+    border: none !important;
 }
 
-.btn-outline-secondary:hover {
-    color: #fff !important;
-    background-color: #FF5200 !important;
-    border-color: #FF5200 !important;
+.btn-outline-secondary:hover, .btn-float-end:hover {
+    color: #ccc !important;
+    background-color: #00000000 !important;
 }
 
+hr {
+    color: inherit;
+    background-color: currentColor;
+    opacity: .25;
+    width: 279;
+    height: 34;
+}
+
+a.navlink{
+    color: #035;
+    font-size: 1.2rem;
+}
+
+a.navlink:hover{
+    text-decoration: none;
+    color: #FF5200;
+}
+
+#footer {
+    position: fixed;
+    bottom: 0;
+    left: 7%; /* Alinhe o rodapé no centro horizontal */
+    padding: 10px;
+    text-align: right; /* Alinhe o texto à direita */
+}
+.hrheader{
+    top: 0;
+}
+.hrfooter{
+    margin-top: 170%;
+}
+
+
+.btn-outline-secondary-footer{
+    color: #035 !important;
+    position: absolute;
+    align-self: flex-end;
+}
+
+.offcanvas-start, .offcanvas{
+    width: fit-content;
+    background-color: #ccc;
+}
 
 a {
     color: #FF5200;
