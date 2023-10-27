@@ -102,20 +102,22 @@ a:hover {
     background-color: #00000000 !important;
 }
 
-hr {
-    color: inherit;
-    background-color: currentColor;
-    opacity: .25;
-    width: 279;
-    height: 34;
+.offcanvas {
+    width: 250px; 
+    background-color: #035; 
+    color: #fff; 
 }
 
-a.navlink{
-    color: #035;
+.offcanvas-body {
+    padding: 20px;
+}
+
+.navlink {
+    color: #ccc; 
     font-size: 1.2rem;
 }
 
-a.navlink:hover{
+.navlink:hover {
     text-decoration: none;
     color: #FF5200;
 }
@@ -123,27 +125,32 @@ a.navlink:hover{
 #footer {
     position: fixed;
     bottom: 0;
-    left: 7%; /* Alinhe o rodapé no centro horizontal */
+    left: 0;
     padding: 10px;
-    text-align: right; /* Alinhe o texto à direita */
-}
-.hrheader{
-    top: 0;
-}
-.hrfooter{
-    margin-top: 170%;
+    text-align: center;
+    width: 250px; 
+    background-color: #035; 
+    color: #ccc; 
 }
 
-
-.btn-outline-secondary-footer{
-    color: #035 !important;
-    position: absolute;
-    align-self: flex-end;
+.header-div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
 }
 
-.offcanvas-start, .offcanvas{
-    width: fit-content;
-    background-color: #ccc;
+.imgcanva {
+    width: 20%;
+    height: 30%; 
+}
+
+.hrheader {
+    margin-top: 0;
+}
+
+.hrfooter {
+    margin-top: 0;
 }
 
 a {
@@ -260,7 +267,7 @@ h5{
     justify-content: center;
     min-width: 100px;
     max-width: 220px;
-    margin: 0 auto; /* Isso centralizará horizontalmente */
+    margin: 0 auto; 
     margin-top: 5px;
     display: flex;
     align-items: center;
