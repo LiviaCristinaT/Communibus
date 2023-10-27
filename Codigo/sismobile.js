@@ -33,7 +33,7 @@
 // sismobile.js
 // sismobile.js
 // sismobile.js
-const axios = require('axios');
+//const axios = require('axios');
 let markers = [];
 let minhaLatitude, minhaLongitude;
 let paradasProximasCodigos = []; // Defina no escopo global
@@ -143,8 +143,9 @@ function exibirParadasProximas(paradas, minhaLatitude, minhaLongitude) {
     card.appendChild(distanciaElemento);
 
     card.addEventListener('click', async () => {
-      window.location.href = `/parada/${parada.cod}`; // Redireciona para uma página específica da parada
-  });  
+      window.location.href = `/parada.html?codParada=${parada.cod}`; // Passa o código da parada como parâmetro na URL
+    });
+    
 
     const carouselItem = document.createElement('div');
     carouselItem.className = index === 0 ? 'carousel-item active' : 'carousel-item';

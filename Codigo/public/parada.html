@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Previsões da Parada</title>
     <link rel="stylesheet" href="index.css"> <!-- Se você tiver algum arquivo de estilos -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>   
     <script src="sismobile.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
+
 <body>
     <header>
         <h1>Previsões da Parada</h1>
@@ -16,12 +20,21 @@
         <section id="previsoes-section">
             <!-- As previsões serão inseridas aqui via JavaScript -->
         </section>
+
+        <div id="linhas-container"></div>
+
+        <div id="linhas-onibus">
+            <h3>Linhas de Ônibus para esta Parada:</h3>
+            <ul id="lista-linhas-onibus"></ul>
+          </div>
+          
     </main>
 
     <footer>
         <p>CommuniBus - Previsões de Ônibus</p>
     </footer>
-
+      
 
 </body>
+
 </html>
