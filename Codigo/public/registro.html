@@ -30,21 +30,25 @@
                     <div class="col-md-6">
                         <label for="nome" class="form-label">Nome</label>
                         <input type="text" class="form-control" name="nome" id="nome" required>
+                        <span id="nome-error" class="error-message"></span>
                     </div>
 
                     <div class="col-md-6">
                         <label for="email" class="form-label">Email</label>
                         <input type="email" class="form-control" name="email" id="email" required>
+                        <span id="email-error" class="error-message"></span>
                     </div>
 
                     <div class="col-md-6">
                         <label for="senha" class="form-label">Senha</label>
                         <input type="password" class="form-control" name="senha" id="senha" required>
+                        <span id="senha-error" class="error-message"></span>
                     </div>
 
                     <div class="col-md-6">
                         <label for="confirmasenha" class="form-label">Confirme sua senha</label>
                         <input type="password" class="form-control" name="confirmasenha" id="confirmasenha" required>
+                        <span id="conf-error" class="error-message"></span>
                     </div>
 
                     <script>
@@ -52,21 +56,74 @@
                             const form = document.getElementById("form-cadastro");
                             const senhaInput = document.getElementById("senha");
                             const confirmasenhaInput = document.getElementById("confirmasenha");
-                        
-                            form.addEventListener("submit", function (event) {
+                            const nomeInput = document.getElementById("nome");
+                            const emailInput = document.getElementById("email");
+                            const nomeError = document.getElementById("nome-error");
+                            const emailError = document.getElementById("email-error");
+                            const senhaError = document.getElementById("senha-error");
+                            const confError = document.getElementById("conf-error");
+
+                            nomeInput.addEventListener("input", function () {
+                                if (nomeInput.value.length < 3) {
+                                    nomeError.innerText = "Insira um nome válido";
+                                    nomeInput.classList.add("error");
+                                } else {
+                                    nomeError.innerText = "";
+                                    nomeInput.classList.remove("error");
+
+                                }
+                            });
+
+                            emailInput.addEventListener("input", function () {
+                                const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+                                if (!emailPattern.test(emailInput.value)) {
+                                    emailError.innerText = "Digite um email válido.";
+                                    emailInput.classList.add("error");
+                                } else {
+                                    emailError.innerText = "";
+                                    emailInput.classList.remove("error");
+                                }
+                            });
+
+                            senhaInput.addEventListener("input", function () {
+                                if (senhaInput.value.length < 8) {
+                                    senhaError.innerText = "A senha deve ter pelo menos 6 caracteres.";
+                                    senhaInput.classList.add("error");
+                                } else {
+                                    senhaError.innerText = "";
+                                    senhaInput.classList.remove("error");
+                                }
+                            });
+
+                            confirmasenhaInput.addEventListener("input", function () {
                                 if (senhaInput.value !== confirmasenhaInput.value) {
+                                    confError.innerText = "As senhas não coincidem.";
+                                    confirmasenhaInput.classList.add("error");
+                                } else {
+                                    confError.innerText = "";
+                                    confirmasenhaInput.classList.remove("error");
+                                }
+                            });
+
+                            form.addEventListener("submit", function (event) {
+                                if (nomeInput.value.length < 3 || senhaInput.value.length < 6) {
+                                    event.preventDefault();
+                                    alert("Verifique os campos do formulário.");
+                                } else if (senhaInput.value !== confirmasenhaInput.value) {
+                                    event.preventDefault();
                                     alert("As senhas não coincidem!");
-                                    event.preventDefault(); 
                                 }
                             });
                         });
-                        </script>       
+                    </script>
+
 
                     <div class="termosuso">
                         <div class="mb-3 form-check">
                             <input type="checkbox" class="form-check-input" id="inputCheck" required>
                             <label for="inputCheck" class="form-check-label">Li e aceito os <a href="staticBackdrop"
-                                    data-bs-toggle="modal" data-bs-target="#staticBackdrop" onclick="abrirTermosUso()">termos de uso</a>
+                                    data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+                                    onclick="abrirTermosUso()">termos de uso</a>
                             </label>
                         </div>
 
@@ -82,28 +139,28 @@
                     </div>
 
                     <script>
-                        function abrirTermosUso(){
+                        function abrirTermosUso() {
                             var modalBody = document.querySelector(".modal-body");
 
                             var xhr = new XMLHttpRequest();
                             xhr.open("GET", "termos.html", true);
-                            xhr.onreadystatechange = function() {
-                                if(xhr.readyState === 4 && xhr.status === 200){
+                            xhr.onreadystatechange = function () {
+                                if (xhr.readyState === 4 && xhr.status === 200) {
                                     modalBody.innerHTML = xhr.responseText;
                                 }
                             };
-                            
+
                             xhr.send();
 
                             $('#staticBackdrop').modal('show');
                         }
                     </script>
-                    <button type="submit" class="btn btn-primary">Enviar</button>             
+                    <button type="submit" class="btn btn-primary">Enviar</button>
 
                     <div class="cadastro">
                         <p class="descricao">Já possui uma conta? Faça o <a href="login.html">login</a> </p>
                         <div class="buttonGoogle" id="botaoGoogle"></div>
-                        <div class="buttonTwitter" id="botaoTwitter"> 
+                        <div class="buttonTwitter" id="botaoTwitter">
                             <img src="icone_twitter.png" class="twitter-icon" alt="Twitter Icon">
                             <a class="twitterTxt" href="/auth/twitter">Fazer login com o Twitter</a>
                         </div>

@@ -4,17 +4,22 @@
     margin: 16px;
     border-radius: 8px;
 }
+
 #carouselExampleControls .carousel-control-prev,
 #carouselExampleControls .carousel-control-next {
-    z-index: 1050; /* Valor mais alto para garantir que esteja acima dos cards */
-    width: 5%; /* Reduzir a largura para evitar sobreposição */
+    z-index: 1050;
+    /* Valor mais alto para garantir que esteja acima dos cards */
+    width: 5%;
+    /* Reduzir a largura para evitar sobreposição */
 }
+
 #carouselExampleControls .carousel-inner {
-    
+
     justify-content: center;
     align-items: center;
 
 }
+
 #carouselExampleControls .carousel-item {
     justify-content: center;
     align-items: center;
@@ -22,15 +27,18 @@
 }
 
 
-#map { /* Substitua 'idDoSeuMapa' pelo ID real do seu elemento de mapa */
-    margin-top: 25px; /* Ajuste este valor conforme necessário */
+#map {
+    /* Substitua 'idDoSeuMapa' pelo ID real do seu elemento de mapa */
+    margin-top: 25px;
+    /* Ajuste este valor conforme necessário */
 }
 
 
-h2{
+h2 {
 
-text-align: center;
+    text-align: center;
 }
+
 img {
     width: 67px;
     height: 67px;
@@ -51,9 +59,9 @@ body {
     display: flex;
     overflow-x: auto;
     gap: 16px;
-  }
-  
-  .card {
+}
+
+.card {
     width: 200px;
     /* ... outros estilos do card */
     cursor: pointer;
@@ -62,11 +70,12 @@ body {
     justify-self: center;
     text-align: center;
 
-  }
-#paradasDiv{
+}
+
+#paradasDiv {
     align-content: center;
     text-align: center;
-} 
+}
 
 main {
     padding: 2rem;
@@ -97,25 +106,28 @@ a:hover {
     border: none !important;
 }
 
-.btn-outline-secondary:hover, .btn-float-end:hover {
+.btn-outline-secondary:hover,
+.btn-float-end:hover {
     color: #ccc !important;
     background-color: #00000000 !important;
 }
 
-hr {
-    color: inherit;
-    background-color: currentColor;
-    opacity: .25;
-    width: 279;
-    height: 34;
+.offcanvas {
+    width: 250px;
+    background-color: #035;
+    color: #fff;
 }
 
-a.navlink{
-    color: #035;
+.offcanvas-body {
+    padding: 20px;
+}
+
+.navlink {
+    color: #ccc;
     font-size: 1.2rem;
 }
 
-a.navlink:hover{
+.navlink:hover {
     text-decoration: none;
     color: #FF5200;
 }
@@ -123,27 +135,32 @@ a.navlink:hover{
 #footer {
     position: fixed;
     bottom: 0;
-    left: 7%; /* Alinhe o rodapé no centro horizontal */
+    left: 0;
     padding: 10px;
-    text-align: right; /* Alinhe o texto à direita */
-}
-.hrheader{
-    top: 0;
-}
-.hrfooter{
-    margin-top: 170%;
+    text-align: center;
+    width: 250px;
+    background-color: #035;
+    color: #ccc;
 }
 
-
-.btn-outline-secondary-footer{
-    color: #035 !important;
-    position: absolute;
-    align-self: flex-end;
+.header-div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
 }
 
-.offcanvas-start, .offcanvas{
-    width: fit-content;
-    background-color: #ccc;
+.imgcanva {
+    width: 20%;
+    height: 30%;
+}
+
+.hrheader {
+    margin-top: 0;
+}
+
+.hrfooter {
+    margin-top: 0;
 }
 
 a {
@@ -167,7 +184,7 @@ label {
     text-transform: uppercase;
 }
 
-label{
+label {
     display: block;
     text-align: left;
 }
@@ -179,9 +196,10 @@ label{
     text-transform: none;
 }
 
-h5{
+h5 {
     text-transform: uppercase;
 }
+
 .termosuso {
     padding-top: 0.7rem;
     width: max-content;
@@ -232,19 +250,42 @@ h5{
     box-shadow: none;
 }
 
-.form-check-input:checked[type=checkbox]{
+.form-check-input:checked[type=checkbox] {
     background-color: #FF5200;
     border-color: #FF5200;
-  }
-  
-  .form-check-input:focus[type=checkbox] {
+}
+
+.form-check-input:focus[type=checkbox] {
     box-shadow: 0 0 0 0.1px #FF5200;
 }
 
-.S9gUrf-YoZ4jf, .S9gUrf-YoZ4jf *{
+.S9gUrf-YoZ4jf,
+.S9gUrf-YoZ4jf * {
     display: flex;
     justify-content: center;
-   border-radius: 10px;
+    border-radius: 10px;
+}
+
+.form-control:focus {
+    border-color: #0c0b0b05; /* Cor da borda quando focado */
+    background-color: #ccc;
+    box-shadow: none; /* Remover a sombra padrão do Bootstrap */
+}
+
+.error {
+    border: 1px solid red; /* Define uma borda vermelha */
+    background-color: #ffcccc; /* Define um fundo vermelho claro */
+}
+
+span#nome-error,
+span#email-error,
+span#conf-error,
+span#senha-error {
+    color: red;
+    display: block;
+    text-align: left;
+    padding: 5px;
+    font-size: 12px;
 }
 
 .buttonTwitter {
@@ -260,7 +301,7 @@ h5{
     justify-content: center;
     min-width: 100px;
     max-width: 220px;
-    margin: 0 auto; /* Isso centralizará horizontalmente */
+    margin: 0 auto;
     margin-top: 5px;
     display: flex;
     align-items: center;
@@ -294,7 +335,7 @@ h5{
         font-size: 20px;
     }
 
-.root {
+    .root {
         padding: 20px;
         border-radius: 10px;
         background: #D9D9D9;
@@ -303,6 +344,6 @@ h5{
         align-items: center;
         justify-self: center;
         text-align: center;
-    
-}
+
+    }
 }

@@ -18,16 +18,17 @@
 <body>
     <header>
         <div class="header-div" style="display: flex; justify-content: space-between; align-items: center;">
-           
 
-            <button type="button" class="btn btn-outline-secondary" data-bs-toggle="offcanvas" data-bs-target="#offcanvas" role="button">
+
+            <button type="button" class="btn btn-outline-secondary" data-bs-toggle="offcanvas"
+                data-bs-target="#offcanvas" role="button">
                 <svg xmlns="http://www.w3.org/2000/svg" width="50" height="40" fill="currentColor" class="bi bi-justify"
                     viewBox="0 0 16 16">
                     <path fill-rule="evenodd"
                         d="M2 12.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z">
                     </path>
                 </svg>
-                
+
             </button>
 
             <img src="CommuniBuss.png" alt="" class="imgheader">
@@ -36,9 +37,9 @@
             <a id="botaoVoltar" class="btn d-flex" href="./login.html" style="font-size: 10px;">
                 <button type="button" class="btn btn-outline-secondary">
                     <svg xmlns="http://www.w3.org/2000/svg" width="50" height="40" fill="currentColor"
-                        class="bi bi-arrow-bar-left" viewBox="0 0 16 16">
+                        class="bi bi-arrow-bar-right" viewBox="0 0 16 16">
                         <path fill-rule="evenodd"
-                            d="M12.5 15a.5.5 0 0 1-.5-.5v-13a.5.5 0 0 1 1 0v13a.5.5 0 0 1-.5.5ZM10 8a.5.5 0 0 1-.5.5H3.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L3.707 7.5H9.5a.5.5 0 0 1 .5.5Z">
+                            d="M6 8a.5.5 0 0 0 .5.5h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L12.293 7.5H6.5A.5.5 0 0 0 6 8Zm-2.5 7a.5.5 0 0 1-.5-.5v-13a.5.5 0 0 1 1 0v13a.5.5 0 0 1-.5.5Z">
                         </path>
                     </svg>
                 </button>
@@ -50,7 +51,7 @@
         <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvas" style="width: 250px;">
             <div class="offcanvas-header">
                 <a href="./index.html" class="d-flex align-items-center link-dark text-decoration-none">
-                   <img src="./CommuniBuss.png" alt="CommuniBus" class="imgcanva" >
+                    <img src="./CommuniBuss.png" alt="CommuniBus" class="imgcanva">
                 </a>
             </div>
             <div class="hrheader">
@@ -60,28 +61,50 @@
             <div class="offcanvas-body">
                 <ul class="nav nav-pills flex-column mb-auto">
                     <li class="nav-item">
-                        <a href="./index.html" class="navlink" aria-current="page">
+                        <div class="licontent d-flex align-items">
+
+                            <a href="./index.html" class="navlink" aria-current="page">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="20" fill="currentColor"
+                                class="bi bi-house" viewBox="0 0 20 20">
+                                <path
+                                d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5ZM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5 5 5Z" />
+                            </svg>
                             Home
+                        </div>
                         </a>
                     </li>
                     <li>
-                        <a href="./noticias.html" class="navlink">
+                        <div class="licontent d-flex align-items">
+
+                            <a href="./noticias.html" class="navlink">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="20" fill="currentColor"
+                                class="bi bi-newspaper" viewBox="0 0 20 20">
+                                <path
+                                d="M0 2.5A1.5 1.5 0 0 1 1.5 1h11A1.5 1.5 0 0 1 14 2.5v10.528c0 .3-.05.654-.238.972h.738a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 1 1 0v9a1.5 1.5 0 0 1-1.5 1.5H1.497A1.497 1.497 0 0 1 0 13.5v-11zM12 14c.37 0 .654-.211.853-.441.092-.106.147-.279.147-.531V2.5a.5.5 0 0 0-.5-.5h-11a.5.5 0 0 0-.5.5v11c0 .278.223.5.497.5H12z" />
+                                <path
+                                d="M2 3h10v2H2V3zm0 3h4v3H2V6zm0 4h4v1H2v-1zm0 2h4v1H2v-1zm5-6h2v1H7V6zm3 0h2v1h-2V6zM7 8h2v1H7V8zm3 0h2v1h-2V8zm-3 2h2v1H7v-1zm3 0h2v1h-2v-1zm-3 2h2v1H7v-1zm3 0h2v1h-2v-1z" />
+                            </svg>
                             Notícias
                         </a>
+                    </div>
                     </li>
-                    
+
                     <li>
-                        <a href="./conecte.html" class="navlink">
+                        <div class="licontent d-flex align-items">
+                            <a href="./conecte.html" class="navlink">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="20" fill="currentColor"
+                                class="bi bi-globe-americas" viewBox="0 0 20 20">
+                                <path
+                                d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0ZM2.04 4.326c.325 1.329 2.532 2.54 3.717 3.19.48.263.793.434.743.484-.08.08-.162.158-.242.234-.416.396-.787.749-.758 1.266.035.634.618.824 1.214 1.017.577.188 1.168.38 1.286.983.082.417-.075.988-.22 1.52-.215.782-.406 1.48.22 1.48 1.5-.5 3.798-3.186 4-5 .138-1.243-2-2-3.5-2.5-.478-.16-.755.081-.99.284-.172.15-.322.279-.51.216-.445-.148-2.5-2-1.5-2.5.78-.39.952-.171 1.227.182.078.099.163.208.273.318.609.304.662-.132.723-.633.039-.322.081-.671.277-.867.434-.434 1.265-.791 2.028-1.12.712-.306 1.365-.587 1.579-.88A7 7 0 1 1 2.04 4.327Z" />
+                            </svg>
                             Conecte-se
                         </a>
+                    </div>
                     </li>
 
                 </ul>
-                <div class="hrfooter">
-                    <hr>
-                </div>
                 <div id="footer">
-                   <a href="./login.html" class="navlink">Sair</a>
+                    <a href="./login.html" class="navlink">Sair</a>
                 </div>
 
             </div>
