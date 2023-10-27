@@ -107,7 +107,7 @@ function obterPrevisoes(codParada) {
     });
 }
 
-// ... [restante do código]
+
 
 window.addEventListener('load', main);
 
