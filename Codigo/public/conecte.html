@@ -13,7 +13,6 @@
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/headers/">
 
-
 </head>
 
 <body>
@@ -89,54 +88,6 @@
         </div>
 
 
-        <div id="root" class="container">
-            <div class="row">
-                <!-- <div class="col">
-                    <h2>Linhas de Ônibus</h2>
-                    <div id="linhasDiv" class="carousel">
-                    </div>
-                </div> -->
-                <h2>Paradas Próximas</h2>
-                <div id="carouselExampleControls" class="carousel slide" data-ride="carousel" data-interval="3000">
-                    <div class="carousel-inner" id="paradasCarrossel">
-                        <!-- Os cards das paradas serão inseridos aqui pelo JavaScript -->
-                    </div>
-                    <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Anterior</span>
-                    </a>
-                    <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Próximo</span>
-                    </a>
-                </div>
-
-            </div>
-            <div class="row">
-                <div id="map" style="height: 400px; width: 100%;"></div>
-            </div>
-
-        </div>
-
-        <!-- Modal para exibir detalhes da parada -->
-        <div class="modal fade" id="paradaModal" tabindex="-1" aria-labelledby="paradaModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="paradaModalLabel">Detalhes da Parada</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <!-- Aqui serão inseridos os detalhes da parada -->
-                        <div id="linhasOnibus"></div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </main>
 
     <footer>
@@ -158,7 +109,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
         integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
         crossorigin="anonymous"></script>
-    <script src="sismobile.js"></script>
+    <script src="./sismobile.js"></script>
     <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCd2v5JdVNpMfjSm41NHwyztfdtrB7dg1Q&callback=initMap"></script>
 </body>
