@@ -56,25 +56,6 @@ if (navigator.geolocation) {
 
 var map;
 
-function initMap() {
-  var options = {
-    zoom: 16,
-    center: { lat: minhaLatitude, lng: minhaLongitude }
-  }
-  map = new google.maps.Map(document.getElementById('map'), options);
-  var userLocationMarker = new google.maps.Marker({
-    position: { lat: minhaLatitude, lng: minhaLongitude },
-    map: map,
-    icon: {
-      path: google.maps.SymbolPath.CIRCLE,
-      scale: 10,
-      fillColor: "#00F",
-      fillOpacity: 0.8,
-      strokeWeight: 0
-    },
-    title: 'Sua localização'
-  });
-}
 
 async function main() {
   try {
@@ -107,9 +88,6 @@ function obterPrevisoes(codParada) {
     });
 }
 
-
-
-window.addEventListener('load', main);
 
 
 
@@ -155,15 +133,16 @@ function exibirParadasProximas(paradas, minhaLatitude, minhaLongitude) {
   });
 }
 
-function exibirLinhasOnibus(linhas) {
-  const container = document.getElementById('linhas-container');
-  container.innerHTML = ''; // Limpar conteúdo anterior
-  linhas.forEach(linha => {
-    const linhaElement = document.createElement('div');
-    linhaElement.textContent = `${linha.num_linha} - ${linha.descricao}`;
-    container.appendChild(linhaElement);
-  });
-}
+// function exibirLinhasOnibus(linhas) {
+//   const container = document.getElementById('lista-linhas-onibus');
+//   container.innerHTML = ''; // Limpar conteúdo anterior
+//   linhas.forEach(linha => {
+//     const linhaElement = document.createElement('li');
+//     linhaElement.textContent = `${linha.num_linha} - ${linha.descricao}`;
+//     container.appendChild(linhaElement);
+//   });
+// }
+
 
 
 
@@ -222,29 +201,53 @@ function initMap() {
     title: 'Sua localização'
   });
 }
+function retornoJSON(data) {
+  if (data && data.linhas) {
+      // Suponho que você tenha alguma função para processar e exibir as linhas de ônibus
+      const linhas = response.data.linhas;
+      const listaLinhasOnibus = document.getElementById('lista-linhas-onibus');
+      listaLinhasOnibus.innerHTML = ''; // Limpa a lista atual
 
-async function buscarLinhasDaParada(codParada) {
-  try {
-    const resposta = await fetch(`http://127.0.0.1:4001/siumobile-ws-v01/rest/ws/retornaLinhasQueAtendemParada/${codParada}/0/retornoJSON`);
-    const dados = await resposta.json();
-    if (dados.sucesso) {
-      exibirLinhasOnibus(dados.linhas);
-    } else {
-      console.error('Não foi possível obter as linhas de ônibus para esta parada');
-    }
-  } catch (erro) {
-    console.error('Erro ao buscar linhas de ônibus:', erro);
+      if (linhas.length === 0) {
+          console.log('Nenhuma linha de ônibus encontrada para esta parada.');
+          return;
+      }
+
+      linhas.forEach(linha => {
+          const item = document.createElement('li');
+          item.textContent = `${linha.num_linha} - ${linha.descricao}`;
+          listaLinhasOnibus.appendChild(item);
+      });
+    
+      exibirLinhasOnibus(data.linhas);
+  } else {
+      console.error('Resposta inválida ou ausente de linhas de ônibus.');
   }
 }
-document.addEventListener('DOMContentLoaded', () => {
+
+
+function buscarLinhasDaParada(codParada) {
+  const script = document.createElement('script');
+  script.src = `http://127.0.0.1:4001/proxyLinhasDaParada?codParada=${codParada}&callback=retornoJSON`;
+  document.head.appendChild(script);
+  document.head.removeChild(script); // Remove o script após adicionar para evitar poluição no DOM
+}
+
+
+
+
+
+window.addEventListener('load', () => {
   const urlParams = new URLSearchParams(window.location.search);
   const codParada = urlParams.get('codParada');
+  
   if (codParada) {
     buscarLinhasDaParada(codParada);
   } else {
-    console.error('Código da parada não fornecido');
+    console.error('Código da parada não fornecido na URL.');
   }
 });
+
 
 
 // Chama a função main quando a página é carregada

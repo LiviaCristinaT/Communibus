@@ -6,9 +6,16 @@ const passport = require('passport');
 const session = require('express-session');
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const TwitterStrategy = require('passport-twitter').Strategy;
-
+const cors = require('cors');
 const app = express();
 const PORT = 4001;
+
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    next();
+  });
+  
 
 app.use(session({
     secret: '12345',
@@ -18,6 +25,22 @@ app.use(session({
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.get('/proxyLinhasDaParada', cors(), async (req, res) => {
+    const codParada = req.query.codParada;
+    if (!codParada) {
+        return res.status(400).send('codParada é obrigatório');
+    }
+
+    try {
+        const response = await axios.get(`http://mobile-l.sitbus.com.br:6060/siumobile-ws-v01/rest/ws/retornaLinhasQueAtendemParada/${codParada}/0/retornoJSON`);
+        res.json(response.data);
+    } catch (error) {
+        console.error('Erro ao fazer a requisição:', error);
+        res.status(500).send('Erro interno');
+    }
+});
+
 
 app.get('/parada/:codParada', async (req, res) => {
     const codParada = req.params.codParada;
