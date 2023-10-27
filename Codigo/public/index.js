@@ -23,18 +23,20 @@ app.get('/parada/:codParada', async (req, res) => {
     const codParada = req.params.codParada;
 
     try {
+        // Solicitando previsões de uma Parada
         const response = await axios.get(`http://mobile-l.sitbus.com.br:6060/siumobile-ws-v01/rest/ws/buscarPrevisoes/${codParada}/0/retornoJSON`);
         
         if (response.data.sucesso) {
-            res.json(response.data);
+            const previsoes = response.data.previsoes;
+            // Renderizar a página com as previsões
+            res.render('parada', { previsoes });
         } else {
-            res.status(500).json({ error: 'Erro ao buscar previsões.' });
+            res.status(500).send('Erro ao buscar previsões.');
         }
     } catch (error) {
-        res.status(500).json({ error: 'Erro ao comunicar com a API.' });
+        res.status(500).send('Erro ao comunicar com a API.');
     }
 });
-
 
 app.get('/proxy', async (req, res) => {
     try {
@@ -86,7 +88,7 @@ app.post("/", function (req, res) {
             return;
         }
         if (results && results.length > 0) {
-            res.redirect("/public/index.html");
+            res.redirect("/index.html");
         } else {
             res.redirect("/");
         }
@@ -180,6 +182,8 @@ app.get('/auth/twitter/callback', passport.authenticate('twitter', {
     failureRedirect: '/login.html',
 }));
 
+
+app.use(express.static(__dirname + '/public'));
 
 app.get("/index.html", (req, res) => {
     res.sendFile(__dirname + "/index.html");
