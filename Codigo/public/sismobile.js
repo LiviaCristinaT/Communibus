@@ -63,7 +63,7 @@ async function main() {
     const minhaLatitude = position.coords.latitude;
     const minhaLongitude = position.coords.longitude;
 
-    const response1 = await axios.get(`http://127.0.0.1:4001/proxyParadasProximas?latitude=${minhaLatitude}&longitude=${minhaLongitude}`);
+    const response1 = await axios.get(`http://localhost:4001/proxyParadasProximas?latitude=${minhaLatitude}&longitude=${minhaLongitude}`);
     const parsedData1 = JSON.parse(response1.data.replace('retornoJSON(', '').slice(0, -1));
 
     if (parsedData1.sucesso) {
@@ -228,7 +228,7 @@ function retornoJSON(data) {
 
 function buscarLinhasDaParada(codParada) {
   const script = document.createElement('script');
-  script.src = `http://127.0.0.1:4001/proxyLinhasDaParada?codParada=${codParada}&callback=retornoJSON`;
+  script.src = `http://localhost:4001/proxyLinhasDaParada?codParada=${codParada}&callback=retornoJSON`;
   document.head.appendChild(script);
   document.head.removeChild(script); // Remove o script após adicionar para evitar poluição no DOM
 }

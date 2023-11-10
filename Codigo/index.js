@@ -7,6 +7,10 @@ const session = require('express-session');
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const TwitterStrategy = require('passport-twitter').Strategy;
 const cors = require('cors');
+const Twit = require('twit');
+const { fa } = require('@fortawesome/free-brands-svg-icons');
+
+
 const app = express();
 const PORT = 4001;
 
@@ -191,6 +195,9 @@ passport.use(
 
                     userData.username = result.insertUser;
 
+                    const twitterIcon = fa.faTwitter;
+                    userData.twitterIcon = twitterIcon;
+
                     return done(null, userData);
                 });
             }
@@ -203,7 +210,14 @@ app.get('/auth/twitter', passport.authenticate('twitter'));
 app.get('/auth/twitter/callback', passport.authenticate('twitter', {
     successRedirect: '/index.html',
     failureRedirect: '/login.html',
-}));
+}), (req, res) =>{
+    const user = req.user;
+
+    res.send(`
+    <i class= "fab fa-twitter></i>
+    <span>${user.nome}</span>
+    <img src="${user.twitterIcon}" alt="Twitter Icon`);
+});
 
 
 app.use(express.static(__dirname + '/public'));
